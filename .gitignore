@@ -218,3 +218,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Exclude raw data files
+data/
+*.csv
+
+# Virtual environments
+.venv/
+venv/
