@@ -34,12 +34,15 @@ class SWaTDataLoader:
             if target != 'Label':
                 df = df.drop(columns=[target])
                 
-        # 4. Asigurare ca toate variabilele de proces sunt de tip numeric
+        # 4. Asigurare ca toate variabilele de proces sunt numerice
         process_cols = [c for c in df.columns if c != 'Label']
         for c in process_cols:
             df[c] = pd.to_numeric(df[c], errors='coerce')
             
-        # 5. Eliminare atribute invariante (fara varianta)
+        # 5. Tratare valori lipsa (imputare industriala: forward-fill + backward-fill)
+        df[process_cols] = df[process_cols].ffill().bfill().fillna(0)
+            
+        # 6. Eliminare atribute invariante (fara varianta)
         df = df.drop(columns=[col for col in CONSTANT_COLUMNS if col in df.columns])
         return df
 
